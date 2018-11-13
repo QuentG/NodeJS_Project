@@ -1,0 +1,19 @@
+{
+  "name": "td_quizz",
+  "version": "1.0.0",
+  "description": "Petit quizz sur 3 thèmes qui sont récupérer depuis une api.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "bin": {
+    "quizz": "./index.js"
+  },
+  "author": "Quentin Gans",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "commander": "^2.19.0",
+    "inquirer": "^6.2.0"
+  }
+}
