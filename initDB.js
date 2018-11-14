@@ -20,10 +20,8 @@ let db = new sqlite3.Database('quizz.db', (err) => {
  -----------------------------   */
 db.serialize(() => {
     //.run() retourne un obj Database qui permet de chainer les appels de méthode
-    db.run("DROP TABLE scores")
-    db.run("DROP TABLE user")
-    db.run("CREATE TABLE user (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, token TEXT)")
-    db.run("CREATE TABLE scores (id INTEGER PRIMARY KEY AUTOINCREMENT, score INTEGER, date TEXT, user_id INTEGER REFERENCES user(id) ON DELETE CASCADE)")
+    db.run("CREATE TABLE user (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)")
+    db.run("CREATE TABLE scores (id INTEGER PRIMARY KEY AUTOINCREMENT, score INTEGER, user_id INTEGER REFERENCES user(id) ON DELETE CASCADE)")
 })
 
 //Fermeture de la BDD
