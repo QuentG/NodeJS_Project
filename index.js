@@ -7,13 +7,14 @@
 const program = require('commander')
 const inquirer = require('inquirer')
 const axios = require('axios')
+const manageDB = require('./manageDB')
 
 /* -----------------------------
             VARIABLES
  -----------------------------   */
 
 const theme_url = 'https://opentdb.com/api.php?amount=5&category='
-const game_type_url = '&difficulty=medium&type=boolean' //Difficulty + True/False
+const game_type_url = '&difficulty=medium&type=boolean' // Difficulty + True/False
 let get_theme = {}
 let get_quest = {}
 let allQuestions = [] // Array
@@ -30,6 +31,8 @@ program
   .option('-a, --art', 'Quizz Art')
   .option('-h, --history', 'Quizz History' )
   .option('-j, --videos', 'Quizz Video Games')
+  .option('--adduser <name>', 'Add user in Database')
+  .option('-s, --showusers', 'Show all users')
   // On parse
   program.parse(process.argv)
 
@@ -58,8 +61,8 @@ function getTheme() {
   })
 }
 
-// Recupération des questions en fonction de l'id de la catégorie
-function getQuestions(callback, id_category) {
+// Recupération des questions en fonction de l'id de la catégorie + callback
+function questions(callback, id_category) {
   axios.get(theme_url+id_category+game_type_url).then((response) => {
     get_quest = response.data['results']
     setTimeout(() => {
@@ -121,13 +124,19 @@ if (program.theme) {
   getTheme()
 }
 else if(program.art) {
-  getQuestions(startGame, 15)
+  questions(startGame, 15)
 }
 else if(program.history) {
-  getQuestions(startGame, 23)
+  questions(startGame, 23)
 }
 else if(program.videos) {
-  getQuestions(startGame, 25)
+  questions(startGame, 25)
+}
+else if(program.adduser){
+  manageDB.checkUser(name)
+}
+else if(program.showusers){
+  manageDB.showUsers()
 }
 else {
     program.help()
