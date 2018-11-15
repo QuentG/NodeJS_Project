@@ -134,8 +134,14 @@ else if(program.videos) {
   questions(startGame, 25)
 }
 else if(program.adduser){
-  name = program.name
-  manageDB.addUser(name, db)
+  name = program.adduser
+  manageDB.checkUser(name, db)
+  .then(() => {
+    console.log('Bonjour',name)
+  })
+  .catch(() => {
+    manageDB.addUser(name, db)
+  })
 }
 else if(program.showusers){
   manageDB.showUsers(db)
