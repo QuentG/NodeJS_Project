@@ -33,7 +33,7 @@ program
   .option('-a, --art', 'Quizz Art')
   .option('-h, --history', 'Quizz History' )
   .option('-j, --videos', 'Quizz Video Games')
-  .option('--adduser <name>', 'Add user in Database')
+  .option('-u, --adduser <name>', 'Add user in Database')
   .option('-s, --showusers', 'Show all users')
   // On parse
   program.parse(process.argv)
@@ -91,11 +91,11 @@ function checkReponses() {
     if(get_quest[t].incorect_answer == 'True'){
         reponse[t] = 'False'
     }
-    else if (get_quest[t].correct_answer == 'True'){
+    else if(get_quest[t].correct_answer == 'True'){
         reponse[t] = 'True'
     }
     else {
-      console.log('')
+      console.log('Waiting ...')
     }
   }
 }
@@ -116,6 +116,9 @@ function startGame(get_quest, user) {
         }
       }
       console.log(score+"/10")
+      if (user) {
+        manageDB.insertDB(user, score+'/10')
+      }
   })
 }
 
@@ -133,7 +136,7 @@ else if(program.history) {
   questions(startGame, 25)
 }
 else if(program.videos) {
-  questions(startGame, 15)
+  questions(startGame, 15, user)
 }
 else if(program.adduser){
   name = program.adduser
