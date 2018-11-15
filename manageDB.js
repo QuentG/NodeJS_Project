@@ -11,17 +11,18 @@ const sqlite3 = require('sqlite3').verbose()
  -----------------------------   */
 
 // Recuperation de la DB
-let db = function getDB(){
-    return db = new sqlite3.Database('quizz.db', (err) => {
+module.exports.db = () => {
+    let db = new sqlite3.Database('quizz.db', (err) => {
         if (err){
             console.log('Error :',err)
         }
     })
+    return db
 }
 
 // Ajout d'un user 
-exports.addUser = function addUser(name) {
-    if (typeof name === String ){
+exports.addUser = function addUser(name, db) {
+    if (typeof name == "string"){
         db.serialize(() => {
             //Ajout de l'user dans la DB
             let req = db.prepare('INSERT INTO user (name) VALUES (?)')
@@ -35,7 +36,7 @@ exports.addUser = function addUser(name) {
 }
 
 // Check si l'user est dans la DB sinon le rajoute
-exports.checkUser = function checkUser(name){
+exports.checkUser = function checkUser(name, db){
     db.serialize(() => {
         let req = 'SELECT * FROM user WHERE name = ?'
         db.get(req, [name], (success, error) => {
@@ -54,10 +55,10 @@ exports.checkUser = function checkUser(name){
 }
 
 // Voir le(s) user(s)
-exports.showUsers = function showUsers() {
+exports.showUsers = function showUsers(db) {
     let req  = 'SELECT * FROM user'
-    db.each(req, (success, error) => {
-        console.log(success.id, success.name)
+    db.each(req, (err, row) => {
+        console.log('id -',row.id,' ', 'Name -',row.name)
     })
 }
 

@@ -15,6 +15,7 @@ const manageDB = require('./manageDB')
 
 const theme_url = 'https://opentdb.com/api.php?amount=5&category='
 const game_type_url = '&difficulty=medium&type=boolean' // Difficulty + True/False
+const db = manageDB.db()
 let get_theme = {}
 let get_quest = {}
 let allQuestions = [] // Array
@@ -31,7 +32,7 @@ program
   .option('-a, --art', 'Quizz Art')
   .option('-h, --history', 'Quizz History' )
   .option('-j, --videos', 'Quizz Video Games')
-  .option('--adduser <name>', 'Add user in Database')
+  .option('--adduser [name]', 'Add user in Database')
   .option('-s, --showusers', 'Show all users')
   // On parse
   program.parse(process.argv)
@@ -133,10 +134,11 @@ else if(program.videos) {
   questions(startGame, 25)
 }
 else if(program.adduser){
-  manageDB.checkUser(name)
+  name = program.name
+  manageDB.addUser(name, db)
 }
 else if(program.showusers){
-  manageDB.showUsers()
+  manageDB.showUsers(db)
 }
 else {
     program.help()
