@@ -8,12 +8,13 @@ const program = require('commander')
 const inquirer = require('inquirer')
 const axios = require('axios')
 const manageDB = require('./manageDB')
+const fileM = require('./file')
 
 /* -----------------------------
             VARIABLES
  -----------------------------   */
 
-const theme_url = 'https://opentdb.com/api.php?amount=5&category='
+const theme_url = 'https://opentdb.com/api.php?amount=10&category='
 const game_type_url = '&difficulty=medium&type=boolean' // Difficulty + True/False
 const db = manageDB.db()
 let get_theme = {}
@@ -32,7 +33,7 @@ program
   .option('-a, --art', 'Quizz Art')
   .option('-h, --history', 'Quizz History' )
   .option('-j, --videos', 'Quizz Video Games')
-  .option('--adduser [name]', 'Add user in Database')
+  .option('--adduser <name>', 'Add user in Database')
   .option('-s, --showusers', 'Show all users')
   // On parse
   program.parse(process.argv)
@@ -45,7 +46,8 @@ program
 function getThirdTheme(){
     for(let t = 0; t < get_theme.trivia_categories.length; t++){
       const obj = get_theme.trivia_categories[t]
-      if(obj.id == 15 || obj.id == 23 || obj.id == 25 ){
+      // ID des 3 thèmes choisis
+      if(obj.id == 15 || obj.id == 23 || obj.id == 24 ){
           console.log("Theme :", obj.name)
       }
     }
@@ -65,14 +67,15 @@ function getTheme() {
 // Recupération des questions en fonction de l'id de la catégorie + callback
 function questions(callback, id_category) {
   axios.get(theme_url+id_category+game_type_url).then((response) => {
-    get_quest = response.data['results']
+    get_quest = response.data.results
     setTimeout(() => {
-      callback(get_quest[0].category, get_quest)
+      callback(get_quest)
     },600)
   }).catch((err) => {
       console.log('Error :', err)
   })
 }
+
 
 // Fonction qui va check si la réponse est vrai ou non
 function checkReponses() {
@@ -98,11 +101,11 @@ function checkReponses() {
 }
 
 
-function startGame(get_quest) {
+function startGame(get_quest, user) {
   checkReponses()
   //On laisse le choix à l'utilisateur true/false
   inquirer.prompt(allQuestions).then((answer) => {
-      for (let t = 0; t < 5; t++){
+      for (let t = 0; t < 10; t++){
         console.log('Results :')
         question = t + 1
         if (answer[get_quest] == reponse[t]){
@@ -112,11 +115,10 @@ function startGame(get_quest) {
           console.log('Wrooooong answer !\n')
         }
       }
-      console.log(score+"/5")
+      console.log(score+"/10")
   })
 }
 
- 
 /* -----------------------------
             PROGRAMME
  -----------------------------   */
@@ -125,17 +127,17 @@ if (program.theme) {
   getTheme()
 }
 else if(program.art) {
-  questions(startGame, 15)
-}
-else if(program.history) {
   questions(startGame, 23)
 }
-else if(program.videos) {
+else if(program.history) {
   questions(startGame, 25)
+}
+else if(program.videos) {
+  questions(startGame, 15)
 }
 else if(program.adduser){
   name = program.adduser
-  manageDB.checkUser(name, db)
+  manageDB.checkUserInDB(name, db)
   .then(() => {
     console.log('Bonjour',name)
   })

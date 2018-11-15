@@ -33,7 +33,7 @@ exports.addUser = function addUser(name, db) {
 }
 
 // Check si l'user est dans la DB sinon le rajoute
-exports.checkUser = function(name, db){
+exports.checkUserInDB = function(name, db){
     return new Promise((resolve, reject) => {
         let req = 'SELECT * FROM user WHERE name = ?'
         db.all(req, name, (err, row) => {
@@ -51,17 +51,19 @@ exports.checkUser = function(name, db){
 exports.showUsers = function(db) {
     let req  = 'SELECT * FROM user'
     db.each(req, (err, row) => {
-        console.log('id -',row.id,' ', 'Name -',row.name)
+        console.log('ID -',row.id,' ', 'Name -',row.name)
     })
 }
 
 exports.getUserID = function getUserID(){
-
+    
 }
 
 // Insertion du score
-exports.insertScoreInDB = function insertScoreInDB() {
-
+exports.insertScoreInDB = function (user_id, score) {
+    let req = 'INSERT INTO scores (score, user_id) VALUES (?, ?)'
+    db.run(req, score, user_id)
+    console.log('Insert score on db DONE')
 }
 
 // Voir les scorces des joueurs

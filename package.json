@@ -14,8 +14,8 @@
   "dependencies": {
     "axios": "^0.18.0",
     "commander": "^2.19.0",
+    "fs": "0.0.1-security",
     "inquirer": "^6.2.0",
-    "node-serialize": "0.0.4",
     "prompt-checkbox": "^2.2.0",
     "sqlite3": "^4.0.4"
   }
