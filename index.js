@@ -100,7 +100,7 @@ function checkReponses() {
   }
 }
 
-function startGame(get_quest, name) {
+function startGame(get_quest) {
   checkReponses()
   //On laisse le choix à l'utilisateur true/false
   inquirer.prompt(allQuestions).then((answer) => {
@@ -114,8 +114,8 @@ function startGame(get_quest, name) {
           console.log('Wrooooong answer !\n')
         }
       }
-      console.log(name, score+'/10')
-      file.writeInFile(name+'Score - '+score+'/10'+'\n')
+      console.log(score+'/10')
+      file.writeInFile('Score - '+score+'/10'+'\n')
   })
 } 
 
