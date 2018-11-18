@@ -83,7 +83,7 @@ function checkReponses() {
     let question = t + 1
     //On défini le type des questions
     allQuestions[t] =  {
-      type: 'checkbox',
+      type: 'list',
       name: `${question}`,
       message: `${get_quest[t].question}`,
       choices: ['True', 'False'],
@@ -139,7 +139,7 @@ else if(program.adduser){
   name = program.adduser
   manageDB.checkUserInDB(name, db)
   .then(() => {
-    console.log('Bonjour',name)
+    console.log('Welcome',name)
   })
   .catch(() => {
     manageDB.addUser(name, db)
