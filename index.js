@@ -8,7 +8,7 @@ const program = require('commander')
 const inquirer = require('inquirer')
 const axios = require('axios')
 const manageDB = require('./manageDB')
-const fileM = require('./file')
+const file = require('./file')
 
 /* -----------------------------
             VARIABLES
@@ -30,10 +30,10 @@ let score = 0
 program
   .version('1.0.0')
   .option('-t, --theme', 'Show themes')
-  .option('-a, --art', 'Quizz Art')
+  .option('-m, --music', 'Quizz music')
   .option('-h, --history', 'Quizz History' )
   .option('-j, --videos', 'Quizz Video Games')
-  .option('-u, --adduser <name>', 'Add user in Database')
+  .option('-u, --adduser <name>', 'Add user in Database + Connection')
   .option('-s, --showusers', 'Show all users')
   // On parse
   program.parse(process.argv)
@@ -47,7 +47,7 @@ function getThirdTheme(){
     for(let t = 0; t < get_theme.trivia_categories.length; t++){
       const obj = get_theme.trivia_categories[t]
       // ID des 3 thèmes choisis
-      if(obj.id == 15 || obj.id == 23 || obj.id == 24 ){
+      if(obj.id == 12 || obj.id == 15 || obj.id == 23 ){
           console.log("Theme :", obj.name)
       }
     }
@@ -100,8 +100,7 @@ function checkReponses() {
   }
 }
 
-
-function startGame(get_quest, user) {
+function startGame(get_quest, name) {
   checkReponses()
   //On laisse le choix à l'utilisateur true/false
   inquirer.prompt(allQuestions).then((answer) => {
@@ -115,12 +114,10 @@ function startGame(get_quest, user) {
           console.log('Wrooooong answer !\n')
         }
       }
-      console.log(score+"/10")
-      if (user) {
-        manageDB.insertDB(user, score+'/10')
-      }
+      console.log(name, score+'/10')
+      file.writeInFile(name+'Score - '+score+'/10'+'\n')
   })
-}
+} 
 
 /* -----------------------------
             PROGRAMME
@@ -129,14 +126,14 @@ function startGame(get_quest, user) {
 if (program.theme) {
   getTheme()
 }
-else if(program.art) {
-  questions(startGame, 23)
+else if(program.music) {
+  questions(startGame, 12)
 }
 else if(program.history) {
-  questions(startGame, 25)
+  questions(startGame, 23)
 }
 else if(program.videos) {
-  questions(startGame, 15, user)
+  questions(startGame, 15)
 }
 else if(program.adduser){
   name = program.adduser

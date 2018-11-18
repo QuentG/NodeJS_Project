@@ -5,7 +5,7 @@
  -----------------------------   */
 
 const sqlite3 = require('sqlite3').verbose()
-const fileM = require('./file')
+const file = require('./file')
 
 /* -----------------------------
       FONCTIONS + EXPORTS
@@ -56,57 +56,3 @@ exports.showUsers = function(db) {
     })
 }
 
-// Recuperation de l'id du user
-function getUserID(user, callbackParam, callback) {
-    if (typeof user == "string"){
-            let req = 'SELECT id FROM user WHERE name = ?'
-            db.all(req, [user], (error, row) => {
-                if (error)
-                    return console.log("No user matches")
-                else {
-                    callback(row.id, callbackParam)
-                }
-            })
-    }else{
-        console.error("\nCanceling the user's creation : ",user)
-        return
-    }
-}
-
-// Insertion DB
-exports.insertDB = async (user, score) => {
-    try {
-        await getUserID(user, score, inseryScoreInDB)
-    }
-    catch (e) {
-        console.log(e.message)
-    }
-}
-
-// Insertion du score
-exports.insertScoreInDB = function (user_id, score) {
-    let req = 'INSERT INTO scores (score, user_id) VALUES (?, ?)'
-    db.run(req, score, user_id)
-    console.log('Insert score on db DONE')
-}
-
-// Voir les scores des users
-function showScores(user_id, file = false) {  
-    let data = ["Scores"]
-    let req = "SELECT s.score, u.name FROM scores s JOIN user u ON u.id = s.user_id WHERE s.user_id = " + user_id
-    db.each(req, function(err, row) {
-        if (err)
-            return console.log(err.message)
-        let rows = row.name + ' ' + row.score
-        data.push("\n", rows)
-        if (!file)
-            console.log(row);
-    }, () => {
-        if (file)
-            fileM.writeInFile(data, file)
-    })
-}
-
-exports.exportScores = function (user, file) {
-    getUserID(user, file, showScores)
-}
