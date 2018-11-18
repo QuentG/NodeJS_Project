@@ -11,9 +11,9 @@
  ------------------------------  */
 
 exports.writeInFile = (data) => {
-    let file = 'quizzLog.txt'
+    let file = 'quizzScore.txt'
     fs.appendFile(file, data, (error) => {
         if (error) throw error
-        console.log("Logs written on the file !", file)
+        console.log("Scores written on the file !", file)
     })
 }
