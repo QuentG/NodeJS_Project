@@ -34,7 +34,7 @@ Quizz en Anglais 😏.
 
 ## Installation 
 
-MacOs
+MacOs 💻
 ```sh
 sudo npm install -g
 ```
@@ -42,3 +42,15 @@ Windows (executer l'invité de commande en administrateur)
 ```sh
 npm install -g
 ```
+⚠️ Si vous rencontrez une erreur du type 
+```sh
+Error: Cannot find module 'node_modules/sqlite3/lib/binding/node-v59-linux-x64/node_sqlite3.node'
+```
+Faites un 
+```sh
+npm install sqlite3
+```
+
+## Problème(s)
+
+- Soucis d'encodage au niveau des questions (non-résolu)
