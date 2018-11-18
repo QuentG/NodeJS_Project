@@ -24,4 +24,21 @@ Quizz en Anglais 😏.
 | `-s, --showuser`               | Liste des users qui ont déjà jouer|
 | `--help`                       | Affiche l'aide|
 
+## Modules 
 
+- Axios : Récupération des données de l'api
+- Commander : Ajout d'option quizz -[option]
+- Inquirer :  Choix de réponse pour le user (ici Vrai / Faux)
+- fs : Permet l'écriture des scores dans un fichier
+- sqlite3 : Stockage des users dans une base de données
+
+## Installation 
+
+MacOs
+```sh
+sudo npm install -g
+```
+Windows (executer l'invité de commande en administrateur)
+```sh
+npm install -g
+```
