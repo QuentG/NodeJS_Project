@@ -11,7 +11,7 @@ Realize thanks to the openDB API : https://opentdb.com/api_config.php
 The _quizz_ command is used to answer 3 categories of quizzes that each have 10 questions in the form of true / false.
 Quiz in English 😏.
 
-## Liste des options disponibles
+## List of available options
 
 | Orders                         | Description|
 | ---                            | ---|
